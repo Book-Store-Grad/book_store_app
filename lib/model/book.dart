@@ -30,7 +30,6 @@ class Book {
   String? bGenre;
   String? bPrice;
   int? aId;
-  String? bCreatedOn;
 
   Book(
       {this.bId,
@@ -38,8 +37,7 @@ class Book {
         this.bDescription,
         this.bGenre,
         this.bPrice,
-        this.aId,
-        this.bCreatedOn});
+        this.aId,});
 
   Book.fromJson(Map<String, dynamic> json) {
     bId = json['b_id'];
@@ -48,6 +46,5 @@ class Book {
     bGenre = json['b_genre'];
     bPrice = json['b_price'];
     aId = json['a_id'];
-    bCreatedOn = json['b_created_on'];
   }
 }

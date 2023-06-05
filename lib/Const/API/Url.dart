@@ -1,5 +1,6 @@
 class ApiUrl {
   static const String base = "https://bookstore-api-9pzk.onrender.com/";
+  static const String photoBase = "https://bookstore-api-9pzk.onrender.com";
   static const String login = "auth";
   static const String signup = "auth/signup";
   static const String forgetPassword = "auth/forget-password";

@@ -1,5 +1,5 @@
+import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/controller/Cubit/Author/author_cubit.dart';
-import 'package:book_store/view/Screens/Auth/login.dart';
 import 'package:book_store/view/Screens/Autor/add_book.dart';
 import 'package:book_store/view/Screens/Profile/profile.dart';
 import 'package:book_store/view/widgets/bookItem.dart';
@@ -21,8 +21,17 @@ class AuthHome extends StatelessWidget {
         builder: (context, state) {
           AuthorCubit cubit = AuthorCubit.get(context);
           return Scaffold(
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton(
+                onPressed: (){
+                  navigateTo(context, const AddBook());
+                },
+                child: const Icon(Icons.add),
+              ),
+            ),
             appBar: AppBar(
-              elevation: 0,
+              elevation: 1,
               centerTitle: true,
               title: const Text(
                 'My Books',
@@ -65,39 +74,19 @@ class AuthHome extends StatelessWidget {
                       )
                     : Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            child: DefaultButton(
-                              text: 'Add Book',
-                              function: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AddBook()),
-                                );
-                              },
-                              background: Colors.blue,
-                              textColor: Colors.white,
-                              textSize: 20,
-                              width: 150,
-                              height: 40,
-                            ),
-                          ),
                           Expanded(
                             child: GridView.count(
+                              padding: EdgeInsets.only(top: 20),
                               crossAxisCount: 2,
-                              mainAxisSpacing: 1.0,
                               childAspectRatio: 1 / 1.2,
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               children: List.generate(
-                                  cubit.booksModel!.content!.books!.length,
-                                      (index) =>
-                                          AuthorBook(bookId: cubit.booksModel!.content!.books![index].bId!,
-                                              price: cubit.booksModel!.content!.books![index].bPrice!,
-                                              bookImageUrl: cubit.booksModel!.content!.books![index].coverImageUrl!,
-                                              bookName: cubit.booksModel!.content!.books![index].bName!)),
+                                cubit.booksModel!.content!.books!.length,
+                                (index) => AuthorBook(book: cubit.booksModel!.content!.books![index],
+
+                                ),
+                              ),
                             ),
                           )
                         ],

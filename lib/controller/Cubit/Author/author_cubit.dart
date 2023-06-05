@@ -24,6 +24,8 @@ class AuthorCubit extends Cubit<AuthorState> {
 
   String? category = 'Business';
 
+  String? editCategory;
+
   BookModel? bookModel;
 
   ///Add Book Data
@@ -62,45 +64,43 @@ class AuthorCubit extends Cubit<AuthorState> {
   }
 
   ///edit Book Data
-  void editBook({
-    required String name,
-    required String description,
-    required int price,
-    required BuildContext context,
-  }) async {
-    emit(AddBookLoading());
+  void editBook(
+      {required String name,
+      Function()? onSuccess,
+      required String description,
+      required int price,
+      required BuildContext context,
+      required int bookId}) async {
+    emit(EditBookLoading());
     DioHelper.putData(
-        url: ApiUrl.book,
+        url: '${ApiUrl.book}/$bookId',
         token: CacheHelper.getData(key: 'token'),
         data: {
           "name": name,
           "description": description,
-          "genre": category,
+          "genre": editCategory,
           "price": price
         }).then((value) {
       print("This is statuscode: ${value.statusCode}");
       print("This is data: ${value.data}");
       if (value.statusCode == 200) {
-        replaceTo(context, const AddImage());
-        bookModel = BookModel.fromJson(value.data);
-        int id = bookModel!.content!.book!.bId!;
-        print('This is Id: $id');
-        CacheHelper.saveData(key: 'bookId', value: id);
+        replaceTo(context, const AuthHome());
+        print('Book edited Successfully');
       } else {
         print('Something went wrong !');
       }
-      emit(AddBookSuccess());
+      emit(EditBookSuccess());
     }).catchError((e) {
-      emit(AddBookError());
+      emit(EditBookError());
+      print(e.toString());
     });
   }
-
 
   File? image;
 
   chooseBookImage() async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       image = File(pickedFile.path);
     }
@@ -117,10 +117,7 @@ class AuthorCubit extends Cubit<AuthorState> {
         data: {
           "book_id": bookId,
           "image": await MultipartFile.fromFile(image!.path,
-              filename: image!
-                  .path
-                  .split('/')
-                  .last,
+              filename: image!.path.split('/').last,
               contentType: MediaType('image', 'jpg')),
         }).then((value) {
       print("This is status code:${value.statusCode}");
@@ -188,25 +185,44 @@ class AuthorCubit extends Cubit<AuthorState> {
     });
   }
 
-BooksModel? booksModel;
+  BooksModel? booksModel;
 
   void getAuthorBooks() {
     emit(GetAuthorBooksLoading());
     DioHelper.getData(
       url: '${ApiUrl.book}/all',
       token: CacheHelper.getData(key: "token"),
-      query: {
-        'author_id': CacheHelper.getData(key: "authId")
-      },
+      query: {'author_id': CacheHelper.getData(key: "authId")},
     ).then((value) {
-      if(value.statusCode==200){
-        booksModel=BooksModel.fromJson(value.data);
+      if (value.statusCode == 200) {
+        booksModel = BooksModel.fromJson(value.data);
         print('Author Books get Successfully');
         print(value.data);
       }
       emit(GetAuthorBooksSuccess());
-    }).catchError((e){
+    }).catchError((e) {
       emit(GetAuthorBooksError());
+      print(e.toString());
+    });
+  }
+
+  void deleteBook({
+    required int bookId,
+    required BuildContext context,
+  }) {
+    emit(DeleteBookLoading());
+    DioHelper.deleteData(
+      url: '${ApiUrl.book}/$bookId',
+      token: CacheHelper.getData(key: "token"),
+    ).then((value) {
+      if (value.statusCode == 200) {
+        print('Book deleted Successfully');
+        replaceTo(context, const AuthHome());
+        print(value.data);
+      }
+      emit(DeleteBookSuccess());
+    }).catchError((e) {
+      emit(DeleteBookError());
       print(e.toString());
     });
   }

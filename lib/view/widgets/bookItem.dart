@@ -1,59 +1,75 @@
 import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/component/component.dart';
+import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
+import 'package:book_store/model/books_model.dart';
+import 'package:book_store/view/Screens/Autor/BookPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-class AuthorBook extends StatelessWidget {
 
-  final int bookId;
-  final double price;
-  final String bookImageUrl;
-  final String bookName;
-  const AuthorBook({Key? key, required this.bookId, required this.price, required this.bookImageUrl, required this.bookName}) : super(key: key);
+class AuthorBook extends StatelessWidget {
+  final Books book;
+
+  const AuthorBook({
+    Key? key,
+    required this.book,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        // navigateTo(context, )
+      onTap: () {
+        replaceTo(
+            context,
+            BookPage(
+              book: book,
+            ));
       },
       child: Column(
         children: [
-          Image.network(
-            ApiUrl.base + bookImageUrl,
-            width: 130.w,
-            height: 150.h,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Center(
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Image.asset("assets/images/cover.png",
-                  width: 130.w,
-                  height: 150.h,
-                  fit: BoxFit.cover,
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Image.network(
+              ApiUrl.photoBase + book.coverImageUrl!,
+              headers: {
+                'Authorization': 'Bearer ${CacheHelper.getData(key: 'token')}'
+              },
+              width: 130.w,
+              height: 150.h,
+              fit: BoxFit.fill,
+              errorBuilder: (context, error, stackTrace) => Center(
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.asset(
+                    "assets/images/cover.png",
+                    width: 130.w,
+                    height: 150.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
           ),
           SizedBox(height: 5.h),
           Text(
-            bookName,
+            book.bName!,
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-           '$price',
+            '${book.bPrice}',
             style: TextStyle(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.red
-            ),
+                fontSize: 10.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.red),
           )
-
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:book_store/Const/component/component.dart';
+import 'package:book_store/controller/Cubit/Author/author_cubit.dart';
 import 'package:book_store/controller/Cubit/Profile/profile_cubit.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/view/Screens/Auth/login.dart';
@@ -21,8 +22,7 @@ class ProfileScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfileCubit()..getProfile(),
       child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           ProfileCubit cubit = ProfileCubit.get(context);
           return Scaffold(
@@ -37,6 +37,7 @@ class ProfileScreen extends StatelessWidget {
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
+                  CacheHelper.removeData(key: 'token');
                 },
                 child: const Icon(
                   Icons.arrow_back_ios,
@@ -108,30 +109,52 @@ class ProfileScreen extends StatelessWidget {
                                                 shape: const CircleBorder(),
                                                 clipBehavior: Clip.antiAlias,
                                                 child: Image.network(
-                                                    ApiUrl.base +
-                                                        ApiUrl.profileImage,
-                                                    fit: BoxFit.contain,
-                                                    headers: {
-                                                      "Authorization":
-                                                          "Bearer ${CacheHelper.getData(key: "token")}",
-                                                    }),
+                                                  ApiUrl.base +
+                                                      ApiUrl.profileImage,
+                                                  fit: BoxFit.contain,
+                                                  headers: {
+                                                    "Authorization":
+                                                        "Bearer ${CacheHelper.getData(key: "token")}",
+                                                  },
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Center(
+                                                    child: Container(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Image.asset(
+                                                        "assets/images/cover.png",
+                                                        width: 130.w,
+                                                        height: 150.h,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                       ),
                                     ),
                                   ),
                             state is UpdateProfileImageLoadingState
                                 ? const CircularProgressIndicator(
-                              color: Colors.red,
-                            )
+                                    color: Colors.red,
+                                  )
                                 : cubit.image == null
                                     ? const SizedBox()
                                     : TextButton(
                                         onPressed: () {
                                           cubit.updateProfileImage();
                                         },
-                                        child: const Text("Upload",style: TextStyle(
-                                          color: Colors.red,fontSize: 20
-                                        ),),
+                                        child: const Text(
+                                          "Upload",
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 20),
+                                        ),
                                       ),
                             TextFieldWidget(
                               width: 300.w,

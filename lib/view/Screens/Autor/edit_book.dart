@@ -1,4 +1,6 @@
 import 'package:book_store/controller/Cubit/Author/author_cubit.dart';
+import 'package:book_store/model/book.dart';
+import 'package:book_store/model/books_model.dart';
 import 'package:book_store/view/widgets/buttonfield.dart';
 import 'package:book_store/view/widgets/dropmenu.dart';
 import 'package:book_store/view/widgets/textfield.dart';
@@ -6,32 +8,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AddBook extends StatelessWidget {
-  const AddBook({Key? key}) : super(key: key);
+class EditBook extends StatelessWidget {
+  final Books book;
+
+  EditBook({Key? key, required this.book}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController booknameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final List<String> items = [
+    'Business',
+    'Classic',
+    'Technology',
+    'Fiction',
+    'History',
+    'Education',
+    'Entertainment',
+    'Science',
+    'Political'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final TextEditingController booknameController = TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-    const List<String> items = [
-      'Business',
-      'Classic',
-      'Technology',
-      'Fiction',
-      'History',
-      'Education',
-      'Entertainment',
-      'Science',
-      'Political'
-    ];
+    booknameController.text = book.bName!;
+    descriptionController.text = book.bDescription!;
+    priceController.text = book.bPrice!.toInt().toString();
     return BlocProvider(
       create: (context) => AuthorCubit(),
       child: BlocConsumer<AuthorCubit, AuthorState>(
         listener: (context, state) {},
         builder: (context, state) {
           AuthorCubit cubit = AuthorCubit.get(context);
+          cubit.editCategory = book.bGenre;
           return Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: false,
@@ -40,7 +48,7 @@ class AddBook extends StatelessWidget {
               centerTitle: true,
               backgroundColor: Colors.white,
               title: const Text(
-                "Add a Book to Your Library",
+                "Edit Book",
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -80,17 +88,19 @@ class AddBook extends StatelessWidget {
                                 title: 'Price',
                               ),
                               StatefulBuilder(
-                                builder: (context, setState) => DropMenu(
-                                  width: 300.w,
-                                  items: items,
-                                  title: 'Category',
-                                  value: cubit.category!,
-                                  onChange: (value) {
-                                    setState(() {
-                                      cubit.category = value!;
-                                    });
-                                  },
-                                ),
+                                builder: (context, setState) {
+                                  return DropMenu(
+                                    width: 300.w,
+                                    items: items,
+                                    title: 'Category',
+                                    value: cubit.editCategory!,
+                                    onChange: (value) {
+                                      setState(() {
+                                        cubit.editCategory = value!;
+                                      });
+                                    },
+                                  );
+                                },
                               ),
                               SizedBox(
                                 height: 20,
@@ -107,38 +117,40 @@ class AddBook extends StatelessWidget {
                                 controller: descriptionController,
                                 title: 'Description',
                               ),
-                              state is AddBookLoading?
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.blue,
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
-                                      child: DefaultButton(
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                child: state is EditBookLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.green,
+                                        ),
+                                      )
+                                    : DefaultButton(
                                         height: 40.w,
                                         width: 300.w,
                                         radius: 10,
                                         textSize: 14.sp,
                                         textWeight: FontWeight.bold,
                                         textColor: Colors.white,
-                                        text: 'Next',
+                                        text: 'Save',
+                                        background: Colors.green,
                                         function: () {
                                           if (formKey.currentState!
                                               .validate()) {
-                                            cubit.addBook(
+                                            cubit.editBook(
                                                 context: context,
                                                 name: booknameController.text,
                                                 description:
                                                     descriptionController.text,
                                                 price: int.parse(
-                                                    priceController.text));
+                                                    priceController.text),
+                                                bookId: book.bId!);
                                             print("clicked!");
                                           }
                                         },
                                       ),
-                                    ),
+                              ),
                             ],
                           ),
                         ))
