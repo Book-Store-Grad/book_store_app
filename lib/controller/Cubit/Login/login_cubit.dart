@@ -1,4 +1,5 @@
 import 'package:book_store/Const/API/Url.dart';
+import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/login.dart';
@@ -16,31 +17,31 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-   LoginModel? loginModel;
+  LoginModel? loginModel;
 
   void login({
     required String userName,
     required String password,
+    required BuildContext context,
   }) {
     emit(LoginLoadingState());
 
-    DioHelper.postData(
-        isJsonContentType: false,
-        url: ApiUrl.login,
-        data: {
+    DioHelper.postData(isJsonContentType: false, url: ApiUrl.login, data: {
       "username": userName,
       "password": password,
     }).then((value) {
-    print("This is statuscode: ${value.statusCode}");
-    print("This is data: ${value.data}");
+      print("This is statuscode: ${value.statusCode}");
+      print("This is data: ${value.data}");
       if (value.statusCode == 200) {
-       loginModel = LoginModel.fromJson(value.data);
+        loginModel = LoginModel.fromJson(value.data);
         CacheHelper.saveData(key: "token", value: loginModel!.accessToken);
         CacheHelper.saveData(
-            key: "role", value: loginModel!.content!.customer!.cuRole);
+            key: "role", value: loginModel!.content!.user!.uRole);
+        int? userId = loginModel!.content!.user!.uId;
+        CacheHelper.saveData(key: 'authId', value: userId);
         print("this is token : ${CacheHelper.getData(key: "token")}");
         print("account role : ${CacheHelper.getData(key: "role")}");
-        Get.to(() => const AuthHome());
+        replaceTo(context, const AuthHome());
       } else {
         Get.snackbar("Error", "",
             maxWidth: 400,

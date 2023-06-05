@@ -6,6 +6,7 @@ class TextFieldWidget extends StatefulWidget {
   final String? Function(String?)? validation;
   final String? Function(String?)? onSubmitted;
   final bool isPassword;
+  final bool enabled;
   final String hintText;
   final String title;
   final double width;
@@ -30,6 +31,7 @@ class TextFieldWidget extends StatefulWidget {
       this.maxLines = 1,
       this.titleSize = 16,
       this.onSubmitted,
+      this.enabled=true,
       this.isPassword: false,
       this.hintColor = Colors.grey,
       this.textColor = Colors.white,
@@ -65,13 +67,14 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         Container(
             width: widget.width,
             child: TextFormField(
+              enabled: widget.enabled,
               onFieldSubmitted: widget.onSubmitted,
               obscureText:
                   widget.isPassword == true ? visible : widget.isPassword,
               maxLines: widget.maxLines,
               inputFormatters: widget.regExp,
               style: TextStyle(
-                  fontSize: 13.sp,
+                  fontSize: 20.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w500),
               controller: widget.controller,

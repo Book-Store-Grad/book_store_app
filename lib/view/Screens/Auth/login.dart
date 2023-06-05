@@ -98,27 +98,28 @@ class Login extends StatelessWidget {
                       SizedBox(height: 50),
                       state is LoginLoadingState
                           ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blue,
-                          ),)
-                      :DefaultButton(
-                        height: 40.w,
-                        width: 300.w,
-                        radius: 10,
-                        textSize: 14.sp,
-                        textWeight: FontWeight.bold,
-                        textColor: Colors.white,
-                        text: 'Login',
-                        function: () {
-                          if (formKey.currentState!.validate()) {
-                            print("clicked!");
-                            cubit.login(
-                                userName: emailController.text,
-                                password: passwordController.text
-                            );
-                          }
-                        },
-                      ),
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
+                            )
+                          : DefaultButton(
+                              height: 40.w,
+                              width: 300.w,
+                              radius: 10,
+                              textSize: 14.sp,
+                              textWeight: FontWeight.bold,
+                              textColor: Colors.white,
+                              text: 'Login',
+                              function: () {
+                                if (formKey.currentState!.validate()) {
+                                  print("clicked!");
+                                  cubit.login(
+                                      context: context,
+                                      userName: emailController.text,
+                                      password: passwordController.text);
+                                }
+                              },
+                            ),
                       SizedBox(
                         height: 20,
                       ),

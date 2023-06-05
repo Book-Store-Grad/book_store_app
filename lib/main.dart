@@ -1,5 +1,7 @@
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/view/Screens/Auth/login.dart';
+import 'package:book_store/view/Screens/Autor/AuthHome.dart';
+import 'package:book_store/view/Screens/Autor/add_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -17,12 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 690),
+      designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => GetMaterialApp(
+      builder: (_, child) =>  GetMaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white
+        ),
         debugShowCheckedModeBanner: false,
-        home: Login(),
+        home: const Login(),
       ),
     );
   }

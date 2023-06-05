@@ -27,6 +27,9 @@ dependencies:
   shared_preferences: ^2.0.18
   get: ^4.6.5
   flutter_launcher_icons: ^0.12.0
+  image_picker: ^0.8.7+5
+  file_picker: ^5.3.1
+  google_fonts: ^4.0.4
 
 
 
@@ -58,6 +61,7 @@ flutter:
 
   assets:
       - assets/images/
+      - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

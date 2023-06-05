@@ -16,6 +16,7 @@ class DioHelper {
   }
 
   static Future<Response> postData({
+    bool containImage = false,
     bool isJsonContentType = true,
     required String url,
     Map<String, dynamic>? data,
@@ -29,7 +30,7 @@ class DioHelper {
     return dio!
         .post(
       url,
-      data: data,
+      data: containImage ? FormData.fromMap(data!) : data,
       queryParameters: query,
       options: Options(
           contentType: isJsonContentType
@@ -41,19 +42,7 @@ class DioHelper {
           }),
     )
         .catchError((error) {
-    //  print(error.toString());
-
-      // Get.snackbar("Error", "",
-      //     messageText: Text(
-      //       "Please connect to server!",
-      //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
-      //     ),
-      //     icon: const Icon(
-      //       Icons.error,
-      //       color: Colors.red,
-      //       size: 30,
-      //     ),
-      //     margin: EdgeInsets.symmetric(vertical: .1.sh, horizontal: .1.sw));
+          print(error.toString());
     });
   }
 
@@ -63,7 +52,7 @@ class DioHelper {
     String? token,
   }) async {
     dio!.options.headers = {
-      'Authorization': 'Basic $token',
+      'Authorization': 'Bearer $token',
     };
     return await dio!
         .get(
@@ -78,17 +67,6 @@ class DioHelper {
     )
         .catchError((error) {
       print(error.toString());
-      // Get.snackbar("Error", "",
-      //     messageText: Text(
-      //       "Please connect to server!",
-      //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
-      //     ),
-      //     icon: const Icon(
-      //       Icons.error,
-      //       color: Colors.red,
-      //       size: 30,
-      //     ),
-      //     margin: EdgeInsets.symmetric(vertical: .1.sh, horizontal: .1.sw));
     });
   }
 
@@ -99,7 +77,7 @@ class DioHelper {
     String? token,
   }) async {
     dio!.options.headers = {
-      'Authorization': 'Basic $token',
+      'Authorization': 'Bearer $token',
     };
     return await dio!
         .delete(
@@ -115,17 +93,6 @@ class DioHelper {
     )
         .catchError((error) {
       print(error.toString());
-      // Get.snackbar("Error", "",
-      //     messageText: Text(
-      //       "Please connect to server!",
-      //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
-      //     ),
-      //     icon: const Icon(
-      //       Icons.error,
-      //       color: Colors.red,
-      //       size: 30,
-      //     ),
-      //     margin: EdgeInsets.symmetric(vertical: .1.sh, horizontal: .1.sw));
     });
   }
 
@@ -136,7 +103,7 @@ class DioHelper {
     String? token,
   }) async {
     dio!.options.headers = {
-      'Authorization': 'Basic $token',
+      'Authorization': 'Bearer $token',
     };
     return await dio!
         .put(
@@ -151,17 +118,6 @@ class DioHelper {
           }),
     )
         .catchError((error) {
-      // Get.snackbar("Error", "",
-      //     messageText: Text(
-      //       "Please connect to server!",
-      //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
-      //     ),
-      //     icon: const Icon(
-      //       Icons.error,
-      //       color: Colors.red,
-      //       size: 30,
-      //     ),
-      //     margin: EdgeInsets.symmetric(vertical: .1.sh, horizontal: .1.sw));
     });
   }
 }
