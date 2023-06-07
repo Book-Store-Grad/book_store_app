@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../Const/API/Url.dart';
+import '../../../Const/const.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -34,17 +35,6 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20, color: Colors.black),
               ),
               centerTitle: true,
-              leading: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  CacheHelper.removeData(key: 'token');
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 20,
-                  color: Colors.black,
-                ),
-              ),
             ),
             body: cubit.profile == null
                 ? const Center(
@@ -65,6 +55,9 @@ class ProfileScreen extends StatelessWidget {
                                 children: [
                                   IconButton(
                                     onPressed: () {
+                                      CacheHelper.removeData(key: 'role');
+                                      token='';
+                                      role='';
                                       CacheHelper.removeData(key: "token")
                                           .then((value) {
                                         navigateAndFinish(

@@ -1,3 +1,5 @@
+import 'package:book_store/Const/component/component.dart';
+import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/view/Screens/Auth/signUp.dart';
 import 'package:book_store/view/widgets/buttonfield.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +46,8 @@ class UserType extends StatelessWidget {
               textColor: Colors.white,
               text: 'Author',
               function: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUp()),
-                );
+                CacheHelper.saveData(key: 'signupRole', value: 'author');
+                navigateTo(context, const SignUp());
               },
             ),
             const Padding(
@@ -67,10 +67,8 @@ class UserType extends StatelessWidget {
               textColor: Colors.white,
               text: 'Customer',
               function: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUp()),
-                );
+                CacheHelper.saveData(key: 'signupRole', value: 'customer');
+                navigateTo(context, const SignUp());
               },
             ),
           ],

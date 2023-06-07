@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:book_store/Const/API/Url.dart';
+import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/Signup.dart';
+import 'package:book_store/view/Screens/Auth/login.dart';
 import 'package:book_store/view/Screens/Autor/AuthHome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,29 +16,27 @@ part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());
+
   static SignUpCubit get(context) => BlocProvider.of(context);
 
   SignUpModel? signupModel;
-  String gender="Male";
+  String gender = "Male";
 
-  void signup({
-    required String userName,
-    required String password,
-    required String email,
-    required String gender
-
-  }) {
+  void signup(
+      {required String userName,
+      required String password,
+      required String email,
+      required String gender,
+      required BuildContext context}) {
     emit(SignUpLoadingState());
 
-    DioHelper.postData(
-        isJsonContentType: true,
-        url: ApiUrl.signup,
-        data: {
-          "email":email,
-          "name": userName,
-          "password": password,
-          "gender":gender
-        }).then((value) {
+    DioHelper.postData(isJsonContentType: true, url: ApiUrl.signup, data: {
+      "email": email,
+      "name": userName,
+      "password": password,
+      "gender": gender,
+      "role": CacheHelper.getData(key: "signupRole")
+    }).then((value) {
       print("This is statuscode: ${value.statusCode}");
       print("This is data: ${value.data}");
       if (value.statusCode == 200) {
@@ -46,7 +46,7 @@ class SignUpCubit extends Cubit<SignUpState> {
             key: "role", value: signupModel!.content!.customer!.cuRole);
         print("this is token : ${CacheHelper.getData(key: "token")}");
         print("account role : ${CacheHelper.getData(key: "role")}");
-        Get.to(() => const AuthHome());
+        navigateTo(context, const Login());
       } else {
         Get.snackbar("Error", "",
             maxWidth: 400,

@@ -1,16 +1,12 @@
 class BookModel {
-  String? message;
   Content? content;
 
-  BookModel({this.message, this.content});
+  BookModel({this.content});
 
   BookModel.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
     content =
-    json['content'] != null ? new Content.fromJson(json['content']) : null;
+        json['content'] != null ? new Content.fromJson(json['content']) : null;
   }
-
-
 }
 
 class Content {
@@ -24,27 +20,39 @@ class Content {
 }
 
 class Book {
+  bool? isFree;
+  bool? isOwned;
   int? bId;
   String? bName;
   String? bDescription;
   String? bGenre;
-  String? bPrice;
+  int? bPrice;
   int? aId;
+  String? bCreatedOn;
+  String? coverImageUrl;
 
   Book(
-      {this.bId,
-        this.bName,
-        this.bDescription,
-        this.bGenre,
-        this.bPrice,
-        this.aId,});
+      {this.isFree,
+      this.isOwned,
+      this.bId,
+      this.bName,
+      this.bDescription,
+      this.bGenre,
+      this.bPrice,
+      this.aId,
+      this.bCreatedOn,
+      this.coverImageUrl});
 
   Book.fromJson(Map<String, dynamic> json) {
-    bId = json['b_id'];
-    bName = json['b_name'];
-    bDescription = json['b_description'];
-    bGenre = json['b_genre'];
-    bPrice = json['b_price'];
-    aId = json['a_id'];
+    isFree = json['is_free']??false;
+    isOwned = json['is_owned']??false;
+    bId = json['b_id']??0;
+    bName = json['b_name']??'';
+    bDescription = json['b_description']??'';
+    bGenre = json['b_genre']??'';
+    bPrice = json['b_price']??0;
+    aId = json['a_id']??0;
+    bCreatedOn = json['b_created_on']??0;
+    coverImageUrl = json['cover_image_url']??0;
   }
 }

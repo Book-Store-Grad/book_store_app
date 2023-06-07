@@ -101,34 +101,38 @@ class _SignUpState extends State<SignUp> {
                               value: cubit.gender,
                               onChange: (value) {
                                 setState(() {
-                                  cubit.gender=value!;
+                                  cubit.gender = value!;
                                 });
                               }),
                         ),
                       ),
-                      SizedBox(height: 50),
+                      const SizedBox(height: 50),
                       state is SignUpLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator())
-                     : DefaultButton(
-                        height: 40.w,
-                        width: 300.w,
-                        radius: 10,
-                        textSize: 14.sp,
-                        textWeight: FontWeight.bold,
-                        textColor: Colors.white,
-                        text: 'Sign Up',
-                        function: () {
-                          if(_formKey.currentState!.validate()){
-                            cubit.signup(userName: fullnameController.text, password: passwordController.text, email: emailController.text, gender: cubit.gender.toString());
-                          }
-                        },
-                      ),
-                      SizedBox(height: 10),
+                          ? const Center(child: CircularProgressIndicator())
+                          : DefaultButton(
+                              height: 40.w,
+                              width: 300.w,
+                              radius: 10,
+                              textSize: 14.sp,
+                              textWeight: FontWeight.bold,
+                              textColor: Colors.white,
+                              text: 'Sign Up',
+                              function: () {
+                                if (_formKey.currentState!.validate()) {
+                                  cubit.signup(
+                                      userName: fullnameController.text,
+                                      password: passwordController.text,
+                                      email: emailController.text,
+                                      gender: cubit.gender.toString(),
+                                      context: context);
+                                }
+                              },
+                            ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "Already hava an account ?",
                             style: TextStyle(
                               fontFamily: 'Montserrat',
@@ -138,7 +142,7 @@ class _SignUpState extends State<SignUp> {
                               fontStyle: FontStyle.normal,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5.0,
                           ),
                           TextButton(
@@ -146,10 +150,10 @@ class _SignUpState extends State<SignUp> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Login()),
+                                    builder: (context) => const Login()),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               "Login",
                               style: TextStyle(
                                 fontFamily: 'Montserrat',

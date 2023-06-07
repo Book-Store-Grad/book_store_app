@@ -1,10 +1,14 @@
 import 'package:book_store/Const/const.dart';
+import 'package:book_store/controller/AppController/app_controller_cubit.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/view/Screens/Auth/login.dart';
 import 'package:book_store/view/Screens/Autor/AuthHome.dart';
 import 'package:book_store/view/Screens/Autor/add_file.dart';
+import 'package:book_store/view/Screens/Customer/customer_home.dart';
 import 'package:book_store/view/Screens/Profile/profile.dart';
+import 'package:book_store/view/layout/app_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'helper/shared_prefrences/cache_helper.dart';
@@ -17,22 +21,33 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp
+
+  ({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) => GetMaterialApp(
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-        debugShowCheckedModeBanner: false,
-        home: token != null
-            ? role == 'customer'
-                ? const ProfileScreen()
-                : const AuthHome()
-            : const Login(),
+    return BlocProvider(
+      create: (context) => AppControllerCubit(),
+      child: BlocConsumer<AppControllerCubit, AppControllerState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return ScreenUtilInit(
+            designSize: const Size(360, 690),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (_, child) =>
+                GetMaterialApp(
+                  theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+                  debugShowCheckedModeBanner: false,
+                  home: token != null
+                      ? role == 'customer'
+                      ? const LayoutScreen()
+                      : const AuthHome()
+                      : const Login(),
+                ),
+          );
+        },
       ),
     );
   }

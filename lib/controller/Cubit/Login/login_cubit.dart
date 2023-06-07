@@ -1,8 +1,11 @@
 import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/component/component.dart';
+import 'package:book_store/Const/const.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/login.dart';
+import 'package:book_store/view/Screens/Customer/customer_home.dart';
+import 'package:book_store/view/layout/app_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +44,8 @@ class LoginCubit extends Cubit<LoginState> {
         CacheHelper.saveData(key: 'authId', value: userId);
         print("this is token : ${CacheHelper.getData(key: "token")}");
         print("account role : ${CacheHelper.getData(key: "role")}");
-        replaceTo(context, const AuthHome());
+        navigateAndFinish(
+            context, role == 'author' ? const AuthHome() : const LayoutScreen());
       } else {
         Get.snackbar("Error", "",
             maxWidth: 400,

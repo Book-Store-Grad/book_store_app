@@ -8,4 +8,7 @@ class ApiUrl {
   static const String book = "book";
   static const String profile = "user/profile";
   static const String profileImage = "user/image";
+  static const String recommendation = "recommendation";
+  static const String favorite = "favorite";
+
 }
