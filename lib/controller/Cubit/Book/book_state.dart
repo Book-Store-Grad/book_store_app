@@ -7,10 +7,6 @@ class BookInitial extends BookState {}
 
 class GetBookLoading extends BookState {}
 
-class GetBookSuccess extends BookState {
-  final Book? book;
-
-  GetBookSuccess({required this.book});
-}
+class GetBookSuccess extends BookState {}
 
 class GetBookError extends BookState {}

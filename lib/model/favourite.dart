@@ -32,7 +32,7 @@ class Favorites {
   String? bName;
   String? bDescription;
   String? bGenre;
-  String? bPrice;
+  double? bPrice;
   int? aId;
 
   Favorites(
@@ -54,7 +54,7 @@ class Favorites {
     bName = json['b_name']??'';
     bDescription = json['b_description']??'';
     bGenre = json['b_genre']??'';
-    bPrice = json['b_price']??'';
+    bPrice = json['b_price']??0.0;
     aId = json['a_id'];
   }
 }

@@ -31,9 +31,8 @@ class RecommendBook extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Image.network(
-              ApiUrl.photoBase
-              //+ recommendations.coverImageUrl!
-              ,
+              ApiUrl.photoBase,
+              // + recommendations.coverImageUrl!,
               headers: {
                 'Authorization': 'Bearer ${CacheHelper.getData(key: 'token')}'
               },

@@ -3,7 +3,6 @@ import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/const.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/model/book.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -22,11 +21,11 @@ class BookCubit extends Cubit<BookState> {
       token: token,
     ).then((value) {
       if (value.statusCode == 200) {
-       // book = Book.fromJson(value.data);
+        book = Book.fromJson(value.data['content']['book']);
         print('Book get Successfully !');
         print(value.data);
       }
-      emit(GetBookSuccess(book: book));
+      emit(GetBookSuccess());
     }).catchError((onError) {
       emit(GetBookError());
       print(onError.toString());

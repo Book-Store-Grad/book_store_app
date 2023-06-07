@@ -84,9 +84,9 @@ class CustomerCubit extends Cubit<CustomerState> {
     emit(RemoveFromFavouriteLoading());
     try {
       DioHelper.deleteData(
-          url: ApiUrl.favorite,
-          token: token,
-          query: {'favorite_id': favId}).then((value) {
+        url: '${ApiUrl.favorite}/$favId',
+        token: token,
+      ).then((value) {
         if (value.statusCode == 200) {
           favItems.removeWhere((element) => element.faId == favId);
           emit(RemoveFromFavouriteSuccess());

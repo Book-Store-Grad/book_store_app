@@ -2,9 +2,6 @@ import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/controller/Cubit/Book/book_cubit.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
-import 'package:book_store/model/book.dart';
-import 'package:book_store/model/recommendation.dart';
-
 import 'package:book_store/view/layout/app_layout.dart';
 import 'package:book_store/view/widgets/buttonfield.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GBookPage extends StatelessWidget {
-  final int bookId;
 
-  GBookPage({Key? key, required this.bookId}) : super(key: key);
-  Book? book;
+  const GBookPage({Key? key, required this.bookId}) : super(key: key);
+  final int bookId;
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +19,12 @@ class GBookPage extends StatelessWidget {
       replaceTo(context, const LayoutScreen());
       return false;
     }
-
     return BlocProvider(
       create: (context) => BookCubit()..getBook(bookId: bookId),
       child: BlocConsumer<BookCubit, BookState>(
-        listener: (context, state) {
-          if (state is GetBookSuccess) {
-            book = state.book;
-          }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
-          BookCubit cubit =BookCubit.get(context);
+          BookCubit cubit = BookCubit.get(context);
           return WillPopScope(
             onWillPop: pop,
             child: Scaffold(
@@ -101,7 +92,7 @@ class GBookPage extends StatelessWidget {
                   ),
                 ),
               ),
-              body: state is GetBookLoading || book ==null
+              body: state is GetBookLoading
                   ? const Center(
                       child: CircularProgressIndicator(
                         color: Colors.red,
@@ -164,25 +155,24 @@ class GBookPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                  ' book!.bName!',
+                                    cubit.book!.bName!,
                                     style: TextStyle(
                                       fontSize: 30.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const Padding(
+                                  Padding(
                                     padding:
-                                        EdgeInsets.symmetric(vertical: 5),
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     child: Text(
-                                      'tttttttt'
-                                      // book!.bPrice! == 0.0
-                                      //     ? "Free"
-                                      //     : '${book!.bPrice} EGP',
-                                      // style: TextStyle(
-                                      //     fontSize: 16.sp,
-                                      //     color: book!.bPrice! == 0.0
-                                      //         ? Colors.green
-                                      //         : Colors.red),
+                                      cubit.book!.bPrice! == 0.0
+                                          ? "Free"
+                                          : '${cubit.book!.bPrice} EGP',
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          color: cubit.book!.bPrice! == 0.0
+                                              ? Colors.green
+                                              : Colors.red),
                                     ),
                                   ),
                                   Padding(
@@ -193,7 +183,7 @@ class GBookPage extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          book!.bGenre!,
+                                          cubit.book!.bGenre!,
                                           style: TextStyle(
                                               fontSize: 20.sp,
                                               color: Colors.orange),
@@ -214,7 +204,7 @@ class GBookPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'book!.bDescription!',
+                                    cubit.book!.bDescription!,
                                     style: const TextStyle(
                                       fontSize: 19,
                                       color: Colors.black,

@@ -21,18 +21,20 @@ class Content {
 
 class Book {
   bool? isFree;
+  bool? isFavorite;
   bool? isOwned;
   int? bId;
   String? bName;
   String? bDescription;
   String? bGenre;
-  int? bPrice;
+  double? bPrice;
   int? aId;
   String? bCreatedOn;
   String? coverImageUrl;
 
   Book(
       {this.isFree,
+      this.isFavorite,
       this.isOwned,
       this.bId,
       this.bName,
@@ -44,15 +46,16 @@ class Book {
       this.coverImageUrl});
 
   Book.fromJson(Map<String, dynamic> json) {
-    isFree = json['is_free']??false;
-    isOwned = json['is_owned']??false;
-    bId = json['b_id']??0;
-    bName = json['b_name']??'';
-    bDescription = json['b_description']??'';
-    bGenre = json['b_genre']??'';
-    bPrice = json['b_price']??0;
-    aId = json['a_id']??0;
-    bCreatedOn = json['b_created_on']??0;
-    coverImageUrl = json['cover_image_url']??0;
+    isFree = json['is_free'] ?? false;
+    isOwned = json['is_owned'] ?? false;
+    bId = json['b_id'] ?? 0;
+    bName = json['b_name'] ?? '';
+    bDescription = json['b_description'] ?? '';
+    bGenre = json['b_genre'] ?? '';
+    bPrice = json['b_price'] ?? 0.0;
+    aId = json['a_id'] ?? 0;
+    bCreatedOn = json['b_created_on'] ?? '';
+    coverImageUrl = json['cover_image_url'] ?? '';
+    isFavorite = json['is_favorite'] ?? false;
   }
 }
