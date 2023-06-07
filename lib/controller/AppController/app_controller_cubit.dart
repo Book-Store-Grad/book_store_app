@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:book_store/view/Screens/Customer/cart.dart';
 import 'package:book_store/view/Screens/Customer/customer_home.dart';
 import 'package:book_store/view/Screens/Customer/favourite.dart';
 import 'package:book_store/view/Screens/Profile/profile.dart';
@@ -16,7 +17,7 @@ class AppControllerCubit extends Cubit<AppControllerState> {
    List<Widget> BottomScreens=[
      const CusHome(),
      const FavoritePage(),
-     const CusHome(),
+     const CartPage(),
      const ProfileScreen(),
    ];
   void changeBottomScreen(int index) {

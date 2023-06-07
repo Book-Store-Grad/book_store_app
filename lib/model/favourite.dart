@@ -34,27 +34,30 @@ class Favorites {
   String? bGenre;
   double? bPrice;
   int? aId;
+  String? coverImage;
 
   Favorites(
       {this.faId,
-        this.cuId,
-        this.bId,
-        this.faCreatedOn,
-        this.bName,
-        this.bDescription,
-        this.bGenre,
-        this.bPrice,
-        this.aId});
+      this.cuId,
+      this.bId,
+      this.faCreatedOn,
+      this.bName,
+      this.bDescription,
+      this.bGenre,
+      this.bPrice,
+      this.aId,
+      this.coverImage});
 
   Favorites.fromJson(Map<String, dynamic> json) {
     faId = json['fa_id'];
     cuId = json['cu_id'];
     bId = json['b_id'];
-    faCreatedOn = json['fa_created_on']??'';
-    bName = json['b_name']??'';
-    bDescription = json['b_description']??'';
-    bGenre = json['b_genre']??'';
-    bPrice = json['b_price']??0.0;
+    faCreatedOn = json['fa_created_on'] ?? '';
+    bName = json['b_name'] ?? '';
+    bDescription = json['b_description'] ?? '';
+    bGenre = json['b_genre'] ?? '';
+    bPrice = json['b_price'] ?? 0.0;
     aId = json['a_id'];
+    coverImage = json['cover_image_url'];
   }
 }

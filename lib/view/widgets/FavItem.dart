@@ -1,17 +1,18 @@
 import 'package:book_store/Const/component/component.dart';
-import 'package:book_store/controller/Cubit/Customer/customer_cubit.dart';
+import 'package:book_store/Const/const.dart';
 import 'package:book_store/view/widgets/book_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../Const/API/Url.dart';
 class FavoriteItem extends StatelessWidget {
-  final int favId;
+
   final int bookId;
   final String bookName;
-//  final String bookImage;
+  final String bookImage;
   final String price;
-  const FavoriteItem({Key? key, required this.favId, required this.bookId, required this.bookName, required this.price}) : super(key: key);
+   FavoriteItem({Key? key, required this.bookId, required this.bookName, required this.price, required this.bookImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,28 @@ class FavoriteItem extends StatelessWidget {
         },
         child: Row(
           children: [
-            Image.asset(
-              'assets/images/cover.png',
+            Image.network(
+              ApiUrl.photoBase+ bookName,
+              headers: {
+                'Authorization': 'Bearer $token}'
+              },
               width: 90.w,
               height: 110.h,
               fit: BoxFit.fill,
+              errorBuilder: (context, error, stackTrace) => Center(
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.asset(
+                    "assets/images/cover.png",
+                    width: 90.w,
+                    height: 110.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
             SizedBox(width: 10.w),
             SizedBox(
@@ -55,23 +73,6 @@ class FavoriteItem extends StatelessWidget {
                 ],
               ),
             ),
-            // const Spacer(),
-            // InkWell(
-            //   onTap: () {
-            //     BlocProvider.of<CustomerCubit>(context, listen: false)
-            //         .removeFromFav(favId: favId);
-            //   },
-            //   borderRadius: BorderRadius.circular(50).r,
-            //   child: CircleAvatar(
-            //     radius: 21.r,
-            //     backgroundColor: const Color(0xffD9D9D9),
-            //     foregroundColor: Colors.green,
-            //     child: Icon(
-            //       Icons.clear,
-            //       size: 18.r,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

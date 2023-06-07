@@ -1,5 +1,8 @@
+import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/controller/Cubit/Customer/customer_cubit.dart';
+import 'package:book_store/view/widgets/categriesItem.dart';
 import 'package:book_store/view/widgets/recommendBookItem.dart';
+import 'package:book_store/view/widgets/recommendation_page.dart';
 import 'package:book_store/view/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +13,35 @@ class CusHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const List<String> categoryNames = [
+      'Business',
+      'Classic',
+      'Technology',
+      'Fiction',
+      'History',
+      'Education',
+      'Entertainment',
+      'Science',
+      'Political'
+    ];
+    const List<Color> colors = [
+      Color(0xff3A9B7A),
+      Color(0xffFE6E4C),
+      Color(0xffFFC120),
+      Color(0xff9B81E5),
+      Color(0xff273B4A),
+      Color(0xffE981DE),
+      Color(0xff158CBE),
+    ];
+    const List<IconData> categoryIcons = [
+      Icons.book,
+      Icons.book,
+      Icons.book,
+      Icons.book,
+      Icons.book,
+      Icons.book,
+      Icons.book,
+    ];
     final TextEditingController searchController = TextEditingController();
     return BlocProvider(
       create: (context) => CustomerCubit()..getRecommendation(currentBookId: 1),
@@ -29,7 +61,7 @@ class CusHome extends StatelessWidget {
             ),
             body: Column(
               children: [
-                SearchBar(searchController: searchController),
+                SearchBar(screenCtx: context,searchController: searchController),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -43,7 +75,9 @@ class CusHome extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            navigateTo(context, RecommendationPage(recommendation: cubit.recommendation!));
+                          },
                           child: const Text(
                             'See all',
                             style: TextStyle(color: Colors.blue),
@@ -52,24 +86,58 @@ class CusHome extends StatelessWidget {
                   ),
                 ),
                 state is GetRecommendationLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.red,
-                        ),
-                      )
+                    ? Column(
+                      children: const [
+                         Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 80),
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                      ],
+                    )
                     : Expanded(
                         child: ListView.separated(
-                          padding: const EdgeInsets.all(8.0),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) =>
-                                 RecommendBook(recommendations: cubit.recommendation!.content!.recommendations![index]),
+                            padding: const EdgeInsets.all(8.0),
+                            itemBuilder: (context, index) => RecommendBook(
+                                recommendations: cubit.recommendation!.content!
+                                    .recommendations![index]),
                             scrollDirection: Axis.horizontal,
                             separatorBuilder: (context, index) => SizedBox(
                                   width: 10.w,
                                 ),
-                            itemCount: cubit.recommendation!.content!
-                                .recommendations!.length),
-                      )
+                            itemCount: 5),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Categories',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: ListView.separated(
+                        padding: const EdgeInsets.all(8.0),
+                        itemBuilder: (context, index) => CategoriesList(
+                              categoryImage: categoryIcons[index],
+                              cateogryName: categoryNames[index],
+                              color: colors[index],
+                            ),
+                        scrollDirection: Axis.horizontal,
+                        separatorBuilder: (context, index) => SizedBox(
+                              width: 10.w,
+                            ),
+                        itemCount: 7))
               ],
             ),
           );

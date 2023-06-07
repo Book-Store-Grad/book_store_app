@@ -10,5 +10,7 @@ class ApiUrl {
   static const String profileImage = "user/image";
   static const String recommendation = "recommendation";
   static const String favorite = "favorite";
+  static const String cart = "cart";
+  static const String search = "search";
 
 }

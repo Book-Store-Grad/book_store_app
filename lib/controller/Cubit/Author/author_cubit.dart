@@ -23,9 +23,7 @@ class AuthorCubit extends Cubit<AuthorState> {
   static AuthorCubit get(context) => BlocProvider.of(context);
 
   String? category = 'Business';
-
   String? editCategory;
-
   BookModel? bookModel;
 
   ///Add Book Data

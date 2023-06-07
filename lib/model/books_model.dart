@@ -27,6 +27,7 @@ class Content {
 class Books {
   bool? isFree;
   bool? isOwned;
+  bool? isFavorite;
   int? bId;
   String? bName;
   String? bDescription;
@@ -38,6 +39,7 @@ class Books {
 
   Books(
       {this.isFree,
+      this.isFavorite,
       this.isOwned,
       this.bId,
       this.bName,
@@ -50,6 +52,7 @@ class Books {
 
   Books.fromJson(Map<String, dynamic> json) {
     isFree = json['is_free'] ?? false;
+    isFavorite = json['is_favorite'] ?? false;
     isOwned = json['is_owned'] ?? false;
     bId = json['b_id'] ?? 0;
     bName = json['b_name'] ?? '';

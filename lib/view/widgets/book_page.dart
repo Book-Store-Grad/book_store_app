@@ -1,6 +1,7 @@
 import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/controller/Cubit/Book/book_cubit.dart';
+import 'package:book_store/controller/Cubit/Customer/customer_cubit.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/view/layout/app_layout.dart';
 import 'package:book_store/view/widgets/buttonfield.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GBookPage extends StatelessWidget {
-
   const GBookPage({Key? key, required this.bookId}) : super(key: key);
   final int bookId;
 
@@ -19,12 +19,17 @@ class GBookPage extends StatelessWidget {
       replaceTo(context, const LayoutScreen());
       return false;
     }
-    return BlocProvider(
-      create: (context) => BookCubit()..getBook(bookId: bookId),
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BookCubit()..getBook(bookId: bookId)),
+        BlocProvider(create: (context) => CustomerCubit()),
+      ],
       child: BlocConsumer<BookCubit, BookState>(
         listener: (context, state) {},
         builder: (context, state) {
           BookCubit cubit = BookCubit.get(context);
+          CustomerCubit customerCubit = CustomerCubit.get(context);
           return WillPopScope(
             onWillPop: pop,
             child: Scaffold(
@@ -57,37 +62,55 @@ class GBookPage extends StatelessWidget {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(30)),
                   ),
-                  child:
-                      // state is DeleteBookLoading
-                      //     ? const Center(
-                      //   child: CircularProgressIndicator(
-                      //     color: Colors.red,
-                      //   ),
-                      // )
-                      //     :
-                      Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DefaultButton(
-                          width: .4.sw,
-                          textSize: 15.sp,
-                          height: 40.h,
-                          function: () {},
-                          text: 'Add Favourite',
-                          background: Colors.red,
-                        ),
-                        SizedBox(width: 15.w),
-                        DefaultButton(
-                          width: .4.sw,
-                          textSize: 15.sp,
-                          height: 40.h,
-                          function: () {},
-                          text: 'Add To Cart',
-                          background: Colors.blue,
-                        )
-                      ],
+                    child: BlocConsumer<CustomerCubit, CustomerState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            state is AddToFavouriteLoading?
+                                ? const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 50),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.red,
+                                    ),
+                                  )
+                                : DefaultButton(
+                                    width: .4.sw,
+                                    textSize: 15.sp,
+                                    height: 40.h,
+                                    function: () {
+                                      customerCubit.addToFavourite(
+                                          bookId: bookId);
+                                    },
+                                    text: 'Add Favourite',
+                                    background: Colors.red,
+                                  ),
+                            SizedBox(width: 15.w),
+                            state is AddToCartLoading?
+                                ? const Padding(
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 50),
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
+                            )
+                                : DefaultButton(
+                              width: .4.sw,
+                              textSize: 15.sp,
+                              height: 40.h,
+                              function: () {
+                                customerCubit.addToCart(bookId: bookId);
+                              },
+                              text: 'Add To Cart',
+                              background: Colors.blue,
+                            )
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
