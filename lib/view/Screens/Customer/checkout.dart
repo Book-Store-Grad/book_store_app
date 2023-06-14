@@ -1,7 +1,6 @@
 import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/controller/AppController/app_controller_cubit.dart';
 import 'package:book_store/controller/Cubit/Customer/customer_cubit.dart';
-import 'package:book_store/view/Screens/Customer/customer_home.dart';
 import 'package:book_store/view/layout/app_layout.dart';
 import 'package:book_store/view/widgets/FavItem.dart';
 import 'package:book_store/view/widgets/buttonfield.dart';
@@ -16,7 +15,6 @@ class Checkout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int total = 400;
     return BlocProvider(
       create: (context) => CustomerCubit()..getAllCartItems(),
       child: BlocConsumer<CustomerCubit, CustomerState>(
@@ -93,12 +91,19 @@ class Checkout extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.sp),
                                     ),
-                                    Text(
-                                      '$total EGP',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.sp),
-                                    )
+                                    Builder(builder: (context) {
+                                      num totalPrice = 0;
+                                      for (var cartItem in cubit.cartItems) {
+                                        totalPrice +=
+                                            double.parse(cartItem.bPrice);
+                                      }
+                                      return Text(
+                                        '$totalPrice EGP',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.sp),
+                                      );
+                                    })
                                   ],
                                 ),
                               ),

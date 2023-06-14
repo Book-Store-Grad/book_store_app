@@ -28,7 +28,7 @@ class CartItems {
   int? caiId;
   int? bId;
   String? bName;
-  String? bPrice;
+  dynamic bPrice;
   String? bGenre;
   String? bDescription;
 
