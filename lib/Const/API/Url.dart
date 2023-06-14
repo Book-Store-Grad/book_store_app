@@ -13,5 +13,5 @@ class ApiUrl {
   static const String favorite = "favorite";
   static const String cart = "cart";
   static const String search = "search";
-
+  static const String order = "order";
 }

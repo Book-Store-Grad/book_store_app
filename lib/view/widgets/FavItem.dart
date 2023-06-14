@@ -6,29 +6,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Const/API/Url.dart';
-class FavoriteItem extends StatelessWidget {
 
+class FavoriteItem extends StatelessWidget {
   final int bookId;
   final String bookName;
   final String bookImage;
   final String price;
-   FavoriteItem({Key? key, required this.bookId, required this.bookName, required this.price, required this.bookImage}) : super(key: key);
+
+  FavoriteItem(
+      {Key? key,
+      required this.bookId,
+      required this.bookName,
+      required this.price,
+      required this.bookImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: InkWell(
-        onTap: (){
-          navigateTo(context,GBookPage(bookId:bookId) );
+        onTap: () {
+          navigateTo(context, GBookPage(bookId: bookId));
         },
         child: Row(
           children: [
             Image.network(
-              ApiUrl.photoBase+ bookName,
-              headers: {
-                'Authorization': 'Bearer $token}'
-              },
+              ApiUrl.photoBase + bookName,
+              headers: {'Authorization': 'Bearer $token}'},
               width: 90.w,
               height: 110.h,
               fit: BoxFit.fill,
@@ -54,13 +59,13 @@ class FavoriteItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      bookName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    bookName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
                   SizedBox(height: 10.h),
                   Text(
                     price,

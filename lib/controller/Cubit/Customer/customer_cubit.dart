@@ -208,4 +208,20 @@ class CustomerCubit extends Cubit<CustomerState> {
       print(onError.toString());
     });
   }
+
+  ///order
+  void addorder({required Function() onSuccess}) {
+    emit(OrderLoading());
+    DioHelper.postData(url: ApiUrl.order, token: token).then((value) {
+      if (value.statusCode == 200) {
+        print(value.data);
+        onSuccess();
+        print('Placed order Successfully!');
+      }
+      emit(OrderSuccess());
+    }).catchError((onError) {
+      emit(OrderError());
+      print(onError.toString());
+    });
+  }
 }

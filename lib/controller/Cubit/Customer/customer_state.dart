@@ -65,3 +65,10 @@ class SearchBookLoading extends CustomerState {}
 class SearchBookSuccess extends CustomerState {}
 
 class SearchBookError extends CustomerState {}
+
+///order
+class OrderLoading extends CustomerState {}
+
+class OrderSuccess extends CustomerState {}
+
+class OrderError extends CustomerState {}
