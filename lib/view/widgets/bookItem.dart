@@ -2,12 +2,9 @@ import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/component/component.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/books_model.dart';
-import 'package:book_store/view/Screens/Autor/BookPage.dart';
 import 'package:book_store/view/widgets/book_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../Const/const.dart';
 
 class AuthorBook extends StatelessWidget {
   final Books book;
@@ -22,16 +19,8 @@ class AuthorBook extends StatelessWidget {
     return InkWell(
       onTap: () {
         CacheHelper.saveData(key: 'currentBookId', value: book.bId);
-        print('This is Recommend Book ID${book.bId}');
-        if (role == 'author') {
-          replaceTo(
-              context,
-              BookPage(
-                book: book,
-              ));
-        } else {
-          replaceTo(context, GBookPage(bookId: book.bId!));
-        }
+        print('This is Recommend Book ID: ${book.bId}');
+        replaceTo(context, GBookPage(bookId: book.bId!));
       },
       child: Column(
         children: [

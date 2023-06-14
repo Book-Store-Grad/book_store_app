@@ -52,7 +52,7 @@ class Book {
     bName = json['b_name'] ?? '';
     bDescription = json['b_description'] ?? '';
     bGenre = json['b_genre'] ?? '';
-    bPrice = json['b_price'] ?? 0.0;
+    bPrice = json['b_price'] ??0;
     aId = json['a_id'] ?? 0;
     bCreatedOn = json['b_created_on'] ?? '';
     coverImageUrl = json['cover_image_url'] ?? '';

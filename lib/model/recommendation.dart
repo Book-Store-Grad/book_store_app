@@ -29,7 +29,7 @@ class Recommendations {
   String? bName;
   String? bDescription;
   String? bGenre;
-  String? bPrice;
+  double? bPrice;
   int? aId;
   String? bCreatedOn;
 
@@ -47,7 +47,7 @@ class Recommendations {
     bName = json['b_name']??'';
     bDescription = json['b_description']??'';
     bGenre = json['b_genre']??'';
-    bPrice = json['b_price']??'';
+    bPrice = json['b_price']??0;
     aId = json['a_id']??0;
     bCreatedOn = json['b_created_on']??'';
   }

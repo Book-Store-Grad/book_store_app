@@ -1,5 +1,6 @@
 import 'package:book_store/controller/Cubit/Customer/customer_cubit.dart';
 import 'package:book_store/view/widgets/FavItem.dart';
+import 'package:book_store/view/widgets/buttonfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,32 +52,44 @@ class CartPage extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                               )
-                            : Dismissible(
-                                key: Key('$index'),
-                                onDismissed: (d) {
-                                  cubit.removeFromCart(
-                                      cartId: cubit.cartItems[index].caiId!,
-                                      index: index);
-                                },
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  color: Colors.red,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: .5.sw),
-                                    child: const Icon(
-                                      Icons.delete,
-                                      size: 60,
-                                      color: Colors.white,
-                                    ),
+                            : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 40.0),
+                                  child: DefaultButton(function: (){},
+                                    text: 'Process To Checkout',
+                                    width: 300.w,
+                                    textSize: 18,
                                   ),
                                 ),
-                                child: FavoriteItem(
-                                  bookId: cubit.cartItems[index].bId!,
-                                  bookName: cubit.cartItems[index].bName!,
-                                  price: cubit.cartItems[index].bPrice!,
-                                  bookImage: ' ',
-                                ),
-                              ),
+                                Dismissible(
+                                    key: Key('$index'),
+                                    onDismissed: (d) {
+                                      cubit.removeFromCart(
+                                          cartId: cubit.cartItems[index].caiId!,
+                                          index: index);
+                                    },
+                                    direction: DismissDirection.endToStart,
+                                    background: Container(
+                                      color: Colors.red,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: .5.sw),
+                                        child: const Icon(
+                                          Icons.delete,
+                                          size: 60,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    child: FavoriteItem(
+                                      bookId: cubit.cartItems[index].bId!,
+                                      bookName: cubit.cartItems[index].bName!,
+                                      price: cubit.cartItems[index].bPrice!,
+                                      bookImage: ' ',
+                                    ),
+                                  ),
+                              ],
+                            ),
                     separatorBuilder: (context, index) =>
                         SizedBox(height: 10.h),
                     itemCount: cubit.cartItems.length,

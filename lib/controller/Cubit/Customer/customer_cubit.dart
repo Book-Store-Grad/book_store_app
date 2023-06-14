@@ -1,6 +1,7 @@
 import 'package:book_store/Const/API/Url.dart';
 import 'package:book_store/Const/const.dart';
 import 'package:book_store/helper/dio_helper/dio_helper.dart';
+import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/cart.dart';
 import 'package:book_store/model/favourite.dart';
 import 'package:book_store/model/recommendation.dart';
@@ -20,12 +21,12 @@ class CustomerCubit extends Cubit<CustomerState> {
   int favIndex = 0;
   int cartIndex = 0;
 
-  void getRecommendation({required int currentBookId}) async {
+  void getRecommendation() async {
     emit(GetRecommendationLoading());
     DioHelper.getData(
       url: ApiUrl.recommendation,
       token: token,
-      query: {'book_id': 1},
+      query: {'book_id': (CacheHelper.getData(key: 'currentBookId')) ?? 1},
     ).then((value) {
       if (value.statusCode == 200) {
         recommendation = Recommendation.fromJson(value.data);
@@ -42,7 +43,7 @@ class CustomerCubit extends Cubit<CustomerState> {
   List<Favorites> favItems = [];
 
   ///Favourite
-  void getAllFavItems() async {
+  Future<void> getAllFavItems() async {
     emit(GetAllFavouriteLoading());
     DioHelper.getData(
       url: '${ApiUrl.favorite}/all',
@@ -186,7 +187,7 @@ class CustomerCubit extends Cubit<CustomerState> {
   }
 
   /// search
-  List<Books> searchList=[];
+  List<Books> searchList = [];
 
   void searchBook({required String searchKey}) {
     emit(SearchBookLoading());

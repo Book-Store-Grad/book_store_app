@@ -25,6 +25,7 @@ class CusHome extends StatelessWidget {
       'Political'
     ];
     const List<Color> colors = [
+      Color(0xff8d7069),
       Color(0xff3A9B7A),
       Color(0xffFE6E4C),
       Color(0xffFFC120),
@@ -32,8 +33,11 @@ class CusHome extends StatelessWidget {
       Color(0xff273B4A),
       Color(0xffE981DE),
       Color(0xff158CBE),
+      Color(0xff0e0e0d),
     ];
     const List<IconData> categoryIcons = [
+      Icons.book,
+      Icons.book,
       Icons.book,
       Icons.book,
       Icons.book,
@@ -44,7 +48,7 @@ class CusHome extends StatelessWidget {
     ];
     final TextEditingController searchController = TextEditingController();
     return BlocProvider(
-      create: (context) => CustomerCubit()..getRecommendation(currentBookId: 1),
+      create: (context) => CustomerCubit()..getRecommendation(),
       child: BlocConsumer<CustomerCubit, CustomerState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -61,7 +65,8 @@ class CusHome extends StatelessWidget {
             ),
             body: Column(
               children: [
-                SearchBar(screenCtx: context,searchController: searchController),
+                SearchBar(
+                    screenCtx: context, searchController: searchController),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -76,7 +81,10 @@ class CusHome extends StatelessWidget {
                       ),
                       TextButton(
                           onPressed: () {
-                            navigateTo(context, RecommendationPage(recommendation: cubit.recommendation!));
+                            navigateTo(
+                                context,
+                                RecommendationPage(
+                                    recommendation: cubit.recommendation!));
                           },
                           child: const Text(
                             'See all',
@@ -87,8 +95,8 @@ class CusHome extends StatelessWidget {
                 ),
                 state is GetRecommendationLoading
                     ? Column(
-                      children: const [
-                         Center(
+                        children: const [
+                          Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 80),
                               child: CircularProgressIndicator(
@@ -96,22 +104,34 @@ class CusHome extends StatelessWidget {
                               ),
                             ),
                           ),
-                      ],
-                    )
-                    : Expanded(
-                        child: ListView.separated(
-                            padding: const EdgeInsets.all(8.0),
-                            itemBuilder: (context, index) => RecommendBook(
-                                recommendations: cubit.recommendation!.content!
-                                    .recommendations![index]),
-                            scrollDirection: Axis.horizontal,
-                            separatorBuilder: (context, index) => SizedBox(
-                                  width: 10.w,
-                                ),
-                            itemCount: 5),
-                      ),
+                        ],
+                      )
+                    : cubit.recommendation == null
+                        ? const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 80.0),
+                            child: Center(
+                                child: Text(
+                              'No Recommendations',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,fontSize: 20),
+                            )),
+                          )
+                        : Expanded(
+                            child: ListView.separated(
+                                padding: const EdgeInsets.all(8.0),
+                                itemBuilder: (context, index) => RecommendBook(
+                                    recommendations: cubit.recommendation!
+                                        .content!.recommendations![index]),
+                                scrollDirection: Axis.horizontal,
+                                separatorBuilder: (context, index) => SizedBox(
+                                      width: 10.w,
+                                    ),
+                                itemCount: 5),
+                          ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
@@ -137,7 +157,7 @@ class CusHome extends StatelessWidget {
                         separatorBuilder: (context, index) => SizedBox(
                               width: 10.w,
                             ),
-                        itemCount: 7))
+                        itemCount: 9))
               ],
             ),
           );

@@ -37,15 +37,13 @@ class ResultScreen extends StatelessWidget {
                     color: Colors.red,
                   ),
                 )
-                //     : cubit.searchList.isEmpty
-                //     ? Center(
-                //   child: Text(
-                //     'No Result Found!',
-                //     style: GoogleFonts.akayaKanadaka(
-                //         fontSize: 18.sp, fontWeight: FontWeight.bold),
-                //   ),
-                // )
-                    : Expanded(
+                    :cubit.booksModel !=null && cubit.searchList.isEmpty ?Center(
+                  child: Text(
+                    'No Result Found!',
+                    style: GoogleFonts.akayaKanadaka(
+                        fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ): Expanded(
                       child: GridView.count(
                         padding: EdgeInsets.only(top: 20),
                         crossAxisCount: 2,

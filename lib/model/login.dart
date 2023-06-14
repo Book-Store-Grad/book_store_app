@@ -35,6 +35,6 @@ class User {
     uName = json['u_name']??'';
     uEmail = json['u_email']??'';
     uGender = json['u_gender']??'';
-    uRole = json['u_role']??'';
+    uRole = json['u_role'];
   }
 }

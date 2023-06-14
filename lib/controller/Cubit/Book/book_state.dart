@@ -10,3 +10,9 @@ class GetBookLoading extends BookState {}
 class GetBookSuccess extends BookState {}
 
 class GetBookError extends BookState {}
+
+class GetBookFileLoading extends BookState {}
+
+class GetBookFileSuccess extends BookState {}
+
+class GetBookFileError extends BookState {}

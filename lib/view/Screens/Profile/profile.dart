@@ -1,5 +1,4 @@
 import 'package:book_store/Const/component/component.dart';
-import 'package:book_store/controller/Cubit/Author/author_cubit.dart';
 import 'package:book_store/controller/Cubit/Profile/profile_cubit.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/view/Screens/Auth/login.dart';
@@ -121,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
                                                                 .circular(10),
                                                       ),
                                                       child: Image.asset(
-                                                        "assets/images/cover.png",
+                                                        "assets/images/profile.png",
                                                         width: 130.w,
                                                         height: 150.h,
                                                         fit: BoxFit.cover,

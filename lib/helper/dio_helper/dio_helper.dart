@@ -120,4 +120,26 @@ class DioHelper {
         .catchError((error) {
     });
   }
+  static Future<Response> downloadFile({
+    required String url,
+    required String path,
+    Map<String, dynamic>? query,
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      'Authorization': 'Bearer $token',
+    };
+    return await dio!.download(
+      url,
+      path,
+      queryParameters: query,
+      options: Options(
+        responseType: ResponseType.bytes,
+        followRedirects: false,
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
+    );
+  }
 }

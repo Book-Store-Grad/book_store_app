@@ -8,6 +8,7 @@ import 'package:book_store/view/widgets/buttonfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GBookPage extends StatelessWidget {
   const GBookPage({Key? key, required this.bookId}) : super(key: key);
@@ -52,69 +53,92 @@ class GBookPage extends StatelessWidget {
                   ),
                 ),
               ),
-              bottomSheet: Card(
-                elevation: 10,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(30)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: BlocConsumer<CustomerCubit, CustomerState>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            state is AddToFavouriteLoading?
-                                ? const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 50),
-                                    child: CircularProgressIndicator(
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                : DefaultButton(
-                                    width: .4.sw,
-                                    textSize: 15.sp,
-                                    height: 40.h,
-                                    function: () {
-                                      customerCubit.addToFavourite(
-                                          bookId: bookId);
-                                    },
-                                    text: 'Add Favourite',
-                                    background: Colors.red,
-                                  ),
-                            SizedBox(width: 15.w),
-                            state is AddToCartLoading?
-                                ? const Padding(
-                              padding:
-                              EdgeInsets.symmetric(horizontal: 50),
-                              child: CircularProgressIndicator(
-                                color: Colors.blue,
-                              ),
-                            )
-                                : DefaultButton(
-                              width: .4.sw,
-                              textSize: 15.sp,
-                              height: 40.h,
-                              function: () {
-                                customerCubit.addToCart(bookId: bookId);
-                              },
-                              text: 'Add To Cart',
-                              background: Colors.blue,
-                            )
-                          ],
-                        );
-                      },
+              bottomSheet: cubit.book == null
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
+                    )
+                  : Card(
+                      elevation: 10,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(30)),
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(30)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: BlocConsumer<CustomerCubit, CustomerState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  state is AddToFavouriteLoading?
+                                      ? const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 50),
+                                          child: CircularProgressIndicator(
+                                            color: Colors.red,
+                                          ),
+                                        )
+                                      : DefaultButton(
+                                          width: .4.sw,
+                                          textSize: 15.sp,
+                                          height: 40.h,
+                                          function: () {
+                                            cubit.getBookFile(bookId: bookId);
+                                            customerCubit.addToFavourite(
+                                                bookId: bookId);
+                                          },
+                                          text: 'Add Favourite',
+                                          background: Colors.red,
+                                        ),
+                                  SizedBox(width: 15.w),
+                                  cubit.book!.isOwned! == true ||
+                                          cubit.book!.isFree! == true ||
+                                          cubit.book!.bPrice! == 0.0
+                                      ? DefaultButton(
+                                          width: .4.sw,
+                                          textSize: 15.sp,
+                                          height: 40.h,
+                                          function: () {
+                                            launch(
+                                                'https://bookstore-api-9pzk.onrender.com/book/$bookId/file');
+                                          },
+                                          text: 'Download',
+                                          background: Colors.green,
+                                        )
+                                      : state is AddToCartLoading?
+                                          ? const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 50),
+                                              child: CircularProgressIndicator(
+                                                color: Colors.blue,
+                                              ),
+                                            )
+                                          : DefaultButton(
+                                              width: .4.sw,
+                                              textSize: 15.sp,
+                                              height: 40.h,
+                                              function: () {
+                                                customerCubit.addToCart(
+                                                    bookId: bookId);
+                                              },
+                                              text: 'Add To Cart',
+                                              background: Colors.blue,
+                                            )
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
               body: state is GetBookLoading
                   ? const Center(
                       child: CircularProgressIndicator(
@@ -142,9 +166,8 @@ class GBookPage extends StatelessWidget {
                                         height: 300.h,
                                         child: Image.network(
                                           fit: BoxFit.cover,
-                                          ApiUrl.photoBase
-                                          //+ book.coverImageUrl!
-                                          ,
+                                          ApiUrl.photoBase +
+                                              cubit.book!.coverImageUrl!,
                                           headers: {
                                             'Authorization':
                                                 'Bearer ${CacheHelper.getData(key: 'token')}'

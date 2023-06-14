@@ -5,7 +5,6 @@ import 'package:book_store/helper/dio_helper/dio_helper.dart';
 import 'package:book_store/helper/shared_prefrences/cache_helper.dart';
 import 'package:book_store/model/Signup.dart';
 import 'package:book_store/view/Screens/Auth/login.dart';
-import 'package:book_store/view/Screens/Autor/AuthHome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,11 +40,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       print("This is data: ${value.data}");
       if (value.statusCode == 200) {
         signupModel = SignUpModel.fromJson(value.data);
-        CacheHelper.saveData(key: "token", value: signupModel!.accessToken);
-        CacheHelper.saveData(
-            key: "role", value: signupModel!.content!.customer!.cuRole);
-        print("this is token : ${CacheHelper.getData(key: "token")}");
-        print("account role : ${CacheHelper.getData(key: "role")}");
         navigateTo(context, const Login());
       } else {
         Get.snackbar("Error", "",

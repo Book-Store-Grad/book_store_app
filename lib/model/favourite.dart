@@ -56,7 +56,7 @@ class Favorites {
     bName = json['b_name'] ?? '';
     bDescription = json['b_description'] ?? '';
     bGenre = json['b_genre'] ?? '';
-    bPrice = json['b_price'] ?? 0.0;
+    bPrice = json['b_price'] ?? 0;
     aId = json['a_id'];
     coverImage = json['cover_image_url'];
   }

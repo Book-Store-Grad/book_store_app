@@ -40,7 +40,7 @@ class CategoryScreen extends StatelessWidget {
                 : cubit.booksModel!.content!.books!.isEmpty
                 ? Center(
               child: Text(
-                'No Book Here....!',
+                'No Books Here....!',
                 style: GoogleFonts.akayaKanadaka(
                     fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
