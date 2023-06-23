@@ -43,7 +43,7 @@ class CustomerCubit extends Cubit<CustomerState> {
   List<Favorites> favItems = [];
 
   ///Favourite
-  Future<void> getAllFavItems() async {
+  void getAllFavItems() async {
     emit(GetAllFavouriteLoading());
     DioHelper.getData(
       url: '${ApiUrl.favorite}/all',
@@ -66,7 +66,7 @@ class CustomerCubit extends Cubit<CustomerState> {
     });
   }
 
-  Future<void> addToFavourite({
+  void addToFavourite({
     required int bookId,
   }) async {
     emit(AddToFavouriteLoading());
@@ -85,7 +85,7 @@ class CustomerCubit extends Cubit<CustomerState> {
     });
   }
 
-  Future<void> removeFromFav({required int favId, required int index}) async {
+void removeFromFav({required int favId, required int index}) async {
     emit(RemoveFromFavouriteLoading());
     try {
       favIndex = index;
@@ -127,7 +127,7 @@ class CustomerCubit extends Cubit<CustomerState> {
     });
   }
 
-  Future<void> addToCart({
+  void addToCart({
     required int bookId,
   }) async {
     emit(AddToCartLoading());
@@ -146,7 +146,7 @@ class CustomerCubit extends Cubit<CustomerState> {
     });
   }
 
-  Future<void> removeFromCart({required int cartId, required int index}) async {
+  void removeFromCart({required int cartId, required int index}) async {
     emit(RemoveFromCartLoading());
     try {
       cartIndex = index;
