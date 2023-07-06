@@ -108,7 +108,7 @@ class GBookPage extends StatelessWidget {
                                           height: 40.h,
                                           function: () {
                                             launch(
-                                                'https://bookstore-api-9pzk.onrender.com/book/$bookId/file');
+                                                '${ApiUrl.base}book/$bookId/file');
                                           },
                                           text: 'Download',
                                           background: Colors.green,
